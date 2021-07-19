@@ -141,6 +141,16 @@ namespace Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService.Sys
             return ResultCode.Success;
         }
 
+        [CommandHipc(40)]
+        public ResultCode GetCradleFwVersion(ServiceCtx context)
+        {
+            context.ResponseData.Write(Convert.ToUInt32(0));
+            context.ResponseData.Write(Convert.ToUInt32(0));
+            context.ResponseData.Write(Convert.ToUInt32(0));
+            context.ResponseData.Write(Convert.ToUInt32(0));
+            return ResultCode.Success;
+        }
+
         [CommandHipc(50)] // 3.0.0+
         // IsVrModeEnabled() -> b8
         public ResultCode IsVrModeEnabled(ServiceCtx context)

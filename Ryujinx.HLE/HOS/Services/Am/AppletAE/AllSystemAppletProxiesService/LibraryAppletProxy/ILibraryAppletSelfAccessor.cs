@@ -23,6 +23,17 @@ namespace Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService.Lib
 
                 _appletStandalone.InputData.Enqueue(miiEditInputData);
             }
+            else if (context.Device.Application.TitleId == 0x010000000000100D)
+            {
+                _appletStandalone = new AppletStandalone() {
+                    AppletId = AppletId.PhotoViewer,
+                    LibraryAppletMode = LibraryAppletMode.AllForeground
+                };
+                byte[] miiEditInputData = new byte[0x100];
+                miiEditInputData[0] = 0x03; // Hardcoded unknown value.
+
+                _appletStandalone.InputData.Enqueue(miiEditInputData);
+            }
             else
             {
                 throw new NotImplementedException($"{context.Device.Application.TitleId} applet is not implemented.");
@@ -33,16 +44,22 @@ namespace Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService.Lib
         // PopInData() -> object<nn::am::service::IStorage>
         public ResultCode PopInData(ServiceCtx context)
         {
-            byte[] appletData = _appletStandalone.InputData.Dequeue();
+            try
+            {
+                byte[] appletData = _appletStandalone.InputData.Dequeue();
+                if (appletData.Length == 0)
+                {
+                    return ResultCode.NotAvailable;
+                }
 
-            if (appletData.Length == 0)
+                MakeObject(context, new IStorage(appletData));
+
+                return ResultCode.Success;
+            }
+            catch(Exception e)
             {
                 return ResultCode.NotAvailable;
             }
-
-            MakeObject(context, new IStorage(appletData));
-
-            return ResultCode.Success;
         }
 
         [CommandHipc(11)]

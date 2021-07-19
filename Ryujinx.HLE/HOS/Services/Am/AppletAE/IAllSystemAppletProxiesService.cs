@@ -33,5 +33,12 @@ namespace Ryujinx.HLE.HOS.Services.Am.AppletAE
 
             return ResultCode.Success;
         }
+
+        [CommandHipc(350)]
+        public ResultCode OpenSystemApplicationProxy(ServiceCtx context)
+        {
+            MakeObject(context, new IApplicationProxy(context.Request.HandleDesc.PId));
+            return ResultCode.Success;
+        }
     }
 }

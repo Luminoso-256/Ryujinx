@@ -1,4 +1,5 @@
-﻿using Ryujinx.HLE.HOS.Kernel.Common;
+﻿using Ryujinx.Common.Logging;
+using Ryujinx.HLE.HOS.Kernel.Common;
 using Ryujinx.HLE.HOS.Kernel.Threading;
 using Ryujinx.HLE.HOS.Services.Nv.NvDrvServices.NvHostChannel.Types;
 using Ryujinx.Memory;
@@ -30,7 +31,26 @@ namespace Ryujinx.HLE.HOS.Services.Nv.NvDrvServices.NvHostChannel
                     case 0x1b:
                         result = CallIoctlMethod<SubmitGpfifoArguments, ulong>(SubmitGpfifoEx, arguments, inlineInBuffer);
                         break;
+                    case 0x05:
+                        Logger.Stub?.Print(LogClass.ServiceNv, "Stubbed NvHostGpuDeviceFile.Ioctl2, Control code 0x05");
+                        result = NvInternalResult.Success;
+                        break;
                 }
+            }
+
+            return result;
+        }
+
+        public override NvInternalResult Ioctl(NvIoctl command, Span<byte> arguments)
+        {
+            NvInternalResult result = NvInternalResult.NotImplemented;
+
+            switch (command.Number)
+            {
+                default:
+                    Logger.Stub?.Print(LogClass.ServiceNv, $"Auto-stubbing code {command.Number} in NvHostGpuDeviceFile.Ioctl");
+                    result = NvInternalResult.Success;
+                    break;
             }
 
             return result;
@@ -52,6 +72,7 @@ namespace Ryujinx.HLE.HOS.Services.Nv.NvDrvServices.NvHostChannel
                 case 0x3:
                     targetEvent = _errorNotifierEvent;
                     break;
+
             }
 
             if (targetEvent != null)
