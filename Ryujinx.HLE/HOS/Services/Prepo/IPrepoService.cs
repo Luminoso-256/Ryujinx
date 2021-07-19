@@ -25,6 +25,20 @@ namespace Ryujinx.HLE.HOS.Services.Prepo
             _permission = permission;
         }
 
+        [CommandHipc(40100)]
+        public ResultCode IsUserAgreementCheckEnabled(ServiceCtx context)
+        {
+            context.ResponseData.Write(true);
+            return ResultCode.Success;
+        }
+        [CommandHipc(40101)]
+        public ResultCode SetUserAgreementCheckEnabled(ServiceCtx context)
+        {
+            //who cares?
+            return ResultCode.Success;
+        }
+
+
         [CommandHipc(10100)] // 1.0.0-5.1.0
         [CommandHipc(10102)] // 6.0.0-9.2.0
         [CommandHipc(10104)] // 10.0.0+

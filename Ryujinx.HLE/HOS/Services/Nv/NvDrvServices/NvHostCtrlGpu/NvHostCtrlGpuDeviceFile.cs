@@ -29,6 +29,7 @@ namespace Ryujinx.HLE.HOS.Services.Nv.NvDrvServices.NvHostCtrlGpu
 
         public override NvInternalResult Ioctl(NvIoctl command, Span<byte> arguments)
         {
+            //Console.WriteLine("HostCtrlGPUFile | "+command.Number);
             NvInternalResult result = NvInternalResult.NotImplemented;
 
             if (command.Type == NvIoctl.NvGpuMagic)
@@ -56,6 +57,7 @@ namespace Ryujinx.HLE.HOS.Services.Nv.NvDrvServices.NvHostCtrlGpu
                     case 0x1c:
                         result = CallIoctlMethod<GetGpuTimeArguments>(GetGpuTime, arguments);
                         break;
+                 
                 }
             }
 

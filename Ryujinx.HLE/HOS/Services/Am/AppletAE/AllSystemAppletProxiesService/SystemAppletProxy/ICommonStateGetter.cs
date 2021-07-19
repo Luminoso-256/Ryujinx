@@ -21,6 +21,7 @@ namespace Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService.Sys
 #pragma warning restore CS0414
         private int  _messageEventHandle;
         private int  _displayResolutionChangedEventHandle;
+        private int _aquiredSleeplockHandle;
 
         public ICommonStateGetter(ServiceCtx context)
         {
@@ -112,6 +113,30 @@ namespace Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService.Sys
         public ResultCode GetCurrentFocusState(ServiceCtx context)
         {
             context.ResponseData.Write((byte)context.Device.System.AppletState.FocusState);
+
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(10)]
+        public ResultCode RequestToAquireSleeplock()
+        {
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(13)]
+        public ResultCode GetAcquiredSleepLockEvent(ServiceCtx context)
+        {
+            if (_aquiredSleeplockHandle == 0)
+            {
+                if (context.Process.HandleTable.GenerateHandle(context.Device.System.AquireSleeplockEvent.ReadableEvent, out _aquiredSleeplockHandle) != KernelResult.Success)
+                {
+                    throw new InvalidOperationException("Out of handles!");
+                }
+            }
+
+            context.Response.HandleDesc = IpcHandleDesc.MakeCopy(_aquiredSleeplockHandle);
+
+            Logger.Stub?.PrintStub(LogClass.ServiceAm);
 
             return ResultCode.Success;
         }

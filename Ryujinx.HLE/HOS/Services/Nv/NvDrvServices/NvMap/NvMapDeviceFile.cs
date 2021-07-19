@@ -22,6 +22,7 @@ namespace Ryujinx.HLE.HOS.Services.Nv.NvDrvServices.NvMap
 
         public override NvInternalResult Ioctl(NvIoctl command, Span<byte> arguments)
         {
+           // Console.WriteLine("MapDeviceFile");
             NvInternalResult result = NvInternalResult.NotImplemented;
 
             if (command.Type == NvIoctl.NvMapCustomMagic)

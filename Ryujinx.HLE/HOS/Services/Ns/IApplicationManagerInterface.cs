@@ -20,5 +20,37 @@
 
             return ResultCode.Success;
         }
+
+        public struct ApplicationRecord {
+            ulong ApplicationID;
+            byte Type;
+            byte Unknown1;
+            byte unknown2_1;
+            byte unknown2_2;
+            byte unknown2_3;
+            byte unknown2_4;
+            byte unknown2_5;
+            byte unknown2_6;
+            byte Unknown3;
+            byte unknown4_1;
+            byte unknown4_2;
+            byte unknown4_3;
+            byte unknown4_4;
+            byte unknown4_5;
+            byte unknown4_6;
+            byte unknown4_7;
+        }
+
+
+        [CommandHipc(0)]
+        public ResultCode ListApplicationRecord(ServiceCtx context)
+        {
+            //TODO if we want to make this *actually* work: read the input and do stuff:tm:
+            //for now, just return  and be done with it
+            context.ResponseData.Write(0);
+
+            //no matter what, we will claim success for the sake of getting this through.
+            return ResultCode.Success;
+        }
     }
 }

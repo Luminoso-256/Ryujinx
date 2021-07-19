@@ -118,6 +118,8 @@ namespace Ryujinx.HLE.HOS.Services.Settings
             return GetKeyCodeMapImpl(context, 2);
         }
 
+      
+
         [CommandHipc(11)] // 10.1.0+
         // GetDeviceNickName() -> buffer<nn::settings::system::DeviceNickName, 0x16>
         public ResultCode GetDeviceNickName(ServiceCtx context)

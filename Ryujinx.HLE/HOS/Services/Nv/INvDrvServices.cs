@@ -259,13 +259,15 @@ namespace Ryujinx.HLE.HOS.Services.Nv
                 if (errorCode == NvResult.Success)
                 {
                     errorCode = GetDeviceFileFromFd(fd, out NvDeviceFile deviceFile);
-
                     if (errorCode == NvResult.Success)
                     {
                         NvInternalResult internalResult = deviceFile.Ioctl(ioctlCommand, arguments);
 
                         if (internalResult == NvInternalResult.NotImplemented)
                         {
+                          //  Console.WriteLine("[Hacky/WARN]: Just ignored an unimplemented exception deliberately. Here be dragons!");
+                           // Console.WriteLine($"Command was {ioctlCommand}, args were {arguments.ToString()}.");
+                          //  internalResult = NvInternalResult.Success;
                             throw new NvIoctlNotImplementedException(context, deviceFile, ioctlCommand);
                         }
 
@@ -428,7 +430,8 @@ namespace Ryujinx.HLE.HOS.Services.Nv
         // ForceSetClientPid(u64) -> u32 error_code
         public ResultCode ForceSetClientPid(ServiceCtx context)
         {
-            throw new ServiceNotImplementedException(this, context, false);
+            return ResultCode.Success;
+            //throw new ServiceNotImplementedException(this, context, false);
         }
 
         [CommandHipc(8)]

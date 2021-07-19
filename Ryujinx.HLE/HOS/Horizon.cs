@@ -96,6 +96,7 @@ namespace Ryujinx.HLE.HOS
         internal KEvent VsyncEvent { get; private set; }
 
         internal KEvent DisplayResolutionChangeEvent { get; private set; }
+        internal KEvent AquireSleeplockEvent { get; private set; }
 
         public Keyset KeySet => Device.FileSystem.KeySet;
 
@@ -179,6 +180,7 @@ namespace Ryujinx.HLE.HOS
             VsyncEvent = new KEvent(KernelContext);
 
             DisplayResolutionChangeEvent = new KEvent(KernelContext);
+            AquireSleeplockEvent = new KEvent(KernelContext);
 
             AccountManager = device.Configuration.AccountManager;
             ContentManager = device.Configuration.ContentManager;
@@ -381,6 +383,10 @@ namespace Ryujinx.HLE.HOS
         public void SignalDisplayResolutionChange()
         {
             DisplayResolutionChangeEvent.ReadableEvent.Signal();
+        }
+        public void SignalAquireSleeplockEvent()
+        {
+            AquireSleeplockEvent.ReadableEvent.Signal();
         }
 
         public void SignalVsync()

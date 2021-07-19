@@ -7,6 +7,7 @@ namespace Ryujinx.HLE.HOS.Services.Settings
 		// Generated automatically from a Switch 3.0 config file (Tid: 0100000000000818).
 		public static Dictionary<string, object> Settings = new Dictionary<string, object>
 		{
+            { "systemupdate!enable_network_service", false },
 			{ "account!na_required_for_network_service", true },
 			{ "account.daemon!background_awaking_periodicity", 10800 },
 			{ "account.daemon!schedule_periodicity", 3600 },

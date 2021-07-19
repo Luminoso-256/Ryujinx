@@ -118,8 +118,16 @@ namespace Ryujinx.HLE.HOS.Services
                 if (serviceExists)
                 {
                     Logger.Debug?.Print(LogClass.KernelIpc, $"{service.GetType().Name}: {processRequest.Name}");
-
-                    result = (ResultCode)processRequest.Invoke(service, new object[] { context });
+                    try
+                    {
+                        result = (ResultCode)processRequest.Invoke(service, new object[] { context });
+                    }
+                    catch(Exception e)
+                    {
+                        Logger.Error?.Print(LogClass.KernelIpc, $"Error happened: {e}. Ignoring it.");
+                        result = ResultCode.Success;
+                    }
+                    //result = (ResultCode)processRequest.Invoke(service, context);
                 }
                 else
                 {

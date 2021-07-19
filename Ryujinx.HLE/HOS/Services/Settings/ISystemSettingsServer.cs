@@ -26,6 +26,19 @@ namespace Ryujinx.HLE.HOS.Services.Settings
             return GetFirmwareVersion2(context);
         }
 
+        [CommandHipc(47)]
+        // GetQuestFlag() -> bool
+        public ResultCode GetQuestFlag(ServiceCtx context)
+        {
+            Logger.Warning?.Print(LogClass.Service, $"GetQuestFlag was called. Returning true [This was done soley for QCIT]");
+            context.ResponseData.Write(true);
+
+            Logger.Stub?.PrintStub(LogClass.ServiceSet);
+
+            return ResultCode.Success;
+        }
+
+
         [CommandHipc(4)]
         // GetFirmwareVersion2() -> buffer<nn::settings::system::FirmwareVersion, 0x1a, 0x100>
         public ResultCode GetFirmwareVersion2(ServiceCtx context)
@@ -231,6 +244,13 @@ namespace Ryujinx.HLE.HOS.Services.Settings
 
             Logger.Stub?.PrintStub(LogClass.ServiceSet);
 
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(68)]
+        public ResultCode GetSerialNumber(ServiceCtx context)
+        {
+            context.ResponseData.Write(new byte[17]);
             return ResultCode.Success;
         }
 

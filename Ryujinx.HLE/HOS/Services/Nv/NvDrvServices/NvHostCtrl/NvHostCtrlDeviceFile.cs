@@ -39,6 +39,7 @@ namespace Ryujinx.HLE.HOS.Services.Nv.NvDrvServices.NvHostCtrl
         public override NvInternalResult Ioctl(NvIoctl command, Span<byte> arguments)
         {
             NvInternalResult result = NvInternalResult.NotImplemented;
+            //Console.WriteLine("HostCtrlDeviceFile");
 
             if (command.Type == NvIoctl.NvHostCustomMagic)
             {
