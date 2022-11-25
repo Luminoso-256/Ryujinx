@@ -222,6 +222,18 @@ namespace Ryujinx.HLE.HOS.Services.Settings
             return ResultCode.Success;
         }
 
+        [CommandHipc(47)]
+        // GetQuestFlag() -> bool
+        public ResultCode GetQuestFlag(ServiceCtx context)
+        {
+            Logger.Warning?.Print(LogClass.Service, $"GetQuestFlag was called. Returning true [This was done soley for QCIT]");
+            context.ResponseData.Write(true);
+
+            Logger.Stub?.PrintStub(LogClass.ServiceSet);
+
+            return ResultCode.Success;
+        }
+
         [CommandHipc(60)]
         // IsUserSystemClockAutomaticCorrectionEnabled() -> bool
         public ResultCode IsUserSystemClockAutomaticCorrectionEnabled(ServiceCtx context)
@@ -242,6 +254,13 @@ namespace Ryujinx.HLE.HOS.Services.Settings
 
             Logger.Stub?.PrintStub(LogClass.ServiceSet);
 
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(68)]
+        public ResultCode GetSerialNumber(ServiceCtx context)
+        {
+            context.ResponseData.Write(new byte[17]);
             return ResultCode.Success;
         }
 

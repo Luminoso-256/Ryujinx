@@ -163,6 +163,14 @@ namespace Ryujinx.HLE.HOS.Services.Nifm.StaticService
             return ResultCode.Success;
         }
 
+        [CommandHipc(26)]
+        public ResultCode SetExclusiveClient(ServiceCtx context)
+        {
+            //stub, for now
+            return ResultCode.Success;
+        }
+
+
         private (IPInterfaceProperties, UnicastIPAddressInformation) GetLocalInterface()
         {
             if (!NetworkInterface.GetIsNetworkAvailable())

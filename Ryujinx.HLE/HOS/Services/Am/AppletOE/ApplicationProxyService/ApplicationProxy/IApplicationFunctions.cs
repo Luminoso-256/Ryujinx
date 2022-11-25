@@ -394,6 +394,20 @@ namespace Ryujinx.HLE.HOS.Services.Am.AppletOE.ApplicationProxyService.Applicati
             return ResultCode.Success;
         }
 
+        [CommandHipc(70)]
+        public ResultCode RequestToShutdown()
+        {
+            //yesn't
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(71)]
+        public ResultCode RequestToReboot()
+        {
+            //yesn't
+            return ResultCode.Success;
+        }
+
         [CommandHipc(90)] // 4.0.0+
         // EnableApplicationCrashReport(u8)
         public ResultCode EnableApplicationCrashReport(ServiceCtx context)

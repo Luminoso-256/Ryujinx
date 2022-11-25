@@ -428,7 +428,11 @@ namespace Ryujinx.HLE.HOS.Services.Nv
         // ForceSetClientPid(u64) -> u32 error_code
         public ResultCode ForceSetClientPid(ServiceCtx context)
         {
-            throw new ServiceNotImplementedException(this, context);
+            long pid = context.RequestData.ReadInt64();
+
+            context.ResponseData.Write(0);
+
+            return ResultCode.Success;
         }
 
         [CommandHipc(8)]

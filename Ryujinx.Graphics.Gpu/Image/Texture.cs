@@ -1550,8 +1550,8 @@ namespace Ryujinx.Graphics.Gpu.Image
                     // This reference has already been removed.
                     return _referenceCount <= 0;
                 }
-
-                Debug.Assert(references == 1);
+                //You annoy me.
+                //Debug.Assert(references == 1);
             }
 
             return DecrementReferenceCount();

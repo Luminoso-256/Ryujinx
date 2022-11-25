@@ -1,3 +1,4 @@
+using Ryujinx.Common.Logging;
 using Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService;
 
 namespace Ryujinx.HLE.HOS.Services.Am.AppletAE
@@ -6,6 +7,13 @@ namespace Ryujinx.HLE.HOS.Services.Am.AppletAE
     class IAllSystemAppletProxiesService : IpcService
     {
         public IAllSystemAppletProxiesService(ServiceCtx context) { }
+
+        [CommandHipc(40)]
+        public ResultCode shouldNotExist(ServiceCtx context)
+        {
+            Logger.Warning?.Print(LogClass.ServiceAm, "IAllSystemAppletProxiesService:40 was called. This *technically* shouldn't exist.");
+            return ResultCode.Success;
+        }
 
         [CommandHipc(100)]
         // OpenSystemAppletProxy(u64, pid, handle<copy>) -> object<nn::am::service::ISystemAppletProxy>

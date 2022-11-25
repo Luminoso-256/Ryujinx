@@ -70,6 +70,9 @@ namespace Ryujinx.HLE.HOS.Services.Nv.NvDrvServices.NvHostAsGpu
                     case 0x06:
                         result = CallIoctlMethod<MapBufferExArguments>(MapBufferEx, arguments);
                         break;
+                    case 0x07:
+                        Logger.Info?.Print(LogClass.ServiceNv, $"Number 0x07 triggered");
+                        break;
                     case 0x08:
                         result = CallIoctlMethod<GetVaRegionsArguments>(GetVaRegions, arguments);
                         break;
@@ -78,6 +81,9 @@ namespace Ryujinx.HLE.HOS.Services.Nv.NvDrvServices.NvHostAsGpu
                         break;
                     case 0x14:
                         result = CallIoctlMethod<RemapArguments>(Remap, arguments);
+                        break;
+                    default:
+                        Logger.Error?.Print(LogClass.ServiceNv, $"Command number {command.Number} is missing from NvHostCtrlGpuDeviceFile.");
                         break;
                 }
             }
@@ -102,6 +108,14 @@ namespace Ryujinx.HLE.HOS.Services.Nv.NvDrvServices.NvHostAsGpu
 
             return result;
         }
+
+        private NvInternalResult AllocAddressSpace(ref AllocASArguments arguments)
+        {
+            // ulong size = 
+
+            return NvInternalResult.Success;
+        }
+
 
         private NvInternalResult BindChannel(ref BindChannelArguments arguments)
         {

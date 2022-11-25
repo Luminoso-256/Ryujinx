@@ -125,6 +125,19 @@ namespace Ryujinx.HLE.HOS.Services.Prepo
             return ProcessReport(context, withUserID: true);
         }
 
+        [CommandHipc(40100)]
+        public ResultCode IsUserAgreementCheckEnabled(ServiceCtx context)
+        {
+            context.ResponseData.Write(true);
+            return ResultCode.Success;
+        }
+        [CommandHipc(40101)]
+        public ResultCode SetUserAgreementCheckEnabled(ServiceCtx context)
+        {
+            //who cares?
+            return ResultCode.Success;
+        }
+
         private ResultCode ProcessReport(ServiceCtx context, bool withUserID)
         {
             UserId userId   = withUserID ? context.RequestData.ReadStruct<UserId>() : new UserId();
