@@ -4,5 +4,12 @@
     class IOlscServiceForSystemService : IpcService
     {
         public IOlscServiceForSystemService(ServiceCtx context) { }
+
+        [CommandHipc(0)]
+        public ResultCode CreateTaskListController(ServiceCtx ctx)
+        {
+            MakeObject(ctx, new ITransferTaskListController(ctx));
+            return ResultCode.Success;
+        }
     }
 }

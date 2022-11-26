@@ -925,6 +925,26 @@ namespace Ryujinx.Ava.Ui.ViewModels
             }
         }
 
+        public void OpenQLaunchApplet()
+        {
+            string contentPath = _owner.ContentManager.GetInstalledContentPath(0x0100000000001000, StorageId.BuiltInSystem, NcaContentType.Program);
+
+            if (!string.IsNullOrWhiteSpace(contentPath))
+            {
+                _owner.LoadApplication(contentPath, false, "QLaunch");
+            }
+        }
+
+        public void OpenPhotosApplet()
+        {
+            string contentPath = _owner.ContentManager.GetInstalledContentPath(0x010000000000100D, StorageId.BuiltInSystem, NcaContentType.Program);
+
+            if (!string.IsNullOrWhiteSpace(contentPath))
+            {
+                _owner.LoadApplication(contentPath, false, "photoViewer");
+            }
+        }
+
         public static void OpenRyujinxFolder()
         {
             OpenHelper.OpenFolder(AppDataManager.BaseDirPath);
@@ -1215,6 +1235,11 @@ namespace Ryujinx.Ava.Ui.ViewModels
         public void SimulateWakeUpMessage()
         {
             _owner.AppHost.Device.System.SimulateWakeUpMessage();
+        }
+
+        public void SimulateSleepLockMessage()
+        {
+            _owner.AppHost.Device.System.SignalAquireSleeplockEvent();
         }
 
         public async void PurgeShaderCache()

@@ -33,5 +33,12 @@ namespace Ryujinx.HLE.HOS.Services.Ns
 
             return ResultCode.Success;
         }
+
+        [CommandHipc(7997)]
+        public ResultCode GetDownloadTaskInterface(ServiceCtx context)
+        {
+            MakeObject(context, new IDownloadTaskInterface(context));
+            return ResultCode.Success;
+        }
     }
 }

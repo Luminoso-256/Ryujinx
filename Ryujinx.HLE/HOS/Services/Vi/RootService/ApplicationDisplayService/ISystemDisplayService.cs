@@ -38,6 +38,19 @@ namespace Ryujinx.HLE.HOS.Services.Vi.RootService.ApplicationDisplayService
             return _applicationDisplayService.CreateStrayLayer(context);
         }
 
+        [CommandHipc(3000)]
+        public ResultCode ListDisplayModes(ServiceCtx context)
+        {
+            //objectively bad code on my part
+            context.ResponseData.Write(1);
+
+            context.ResponseData.Write((uint)1280);
+            context.ResponseData.Write((uint)720);
+            context.ResponseData.Write(60.0f);
+            context.ResponseData.Write(0);
+            return ResultCode.Success;
+        }
+
         [CommandHipc(3200)]
         // GetDisplayMode(u64) -> nn::vi::DisplayModeInfo
         public ResultCode GetDisplayMode(ServiceCtx context)

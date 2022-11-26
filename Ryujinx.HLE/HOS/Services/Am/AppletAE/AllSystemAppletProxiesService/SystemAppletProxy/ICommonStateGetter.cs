@@ -119,8 +119,15 @@ namespace Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService.Sys
         }
 
         [CommandHipc(10)]
-        public ResultCode RequestToAquireSleeplock()
+        public ResultCode RequestToAquireSleepLock(ServiceCtx context)
         {
+            Logger.Stub?.PrintStub(LogClass.ServiceAm);
+            return ResultCode.Success;
+        }
+        [CommandHipc(11)]
+        public ResultCode ReleaseSleepLock(ServiceCtx context)
+        {
+            Logger.Stub?.PrintStub(LogClass.ServiceAm);
             return ResultCode.Success;
         }
 

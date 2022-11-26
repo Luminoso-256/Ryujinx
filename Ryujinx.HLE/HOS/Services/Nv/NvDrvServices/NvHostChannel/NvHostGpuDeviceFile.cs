@@ -36,40 +36,40 @@ namespace Ryujinx.HLE.HOS.Services.Nv.NvDrvServices.NvHostChannel
             return evnt;
         }
 
-        public override NvInternalResult Ioctl(NvIoctl command, Span<byte> arguments)
-        {
-            NvInternalResult result = NvInternalResult.NotImplemented;
-
-            switch (command.Number)
-            {
-                case 0x01:
-                    Logger.Info?.Print(LogClass.ServiceNv, "stubbed 0x01 Ioctl (why does this exist what does it do?)");
-                    result = NvInternalResult.Success;
-                    break;
-                case 0x05:
-                    Logger.Info?.Print(LogClass.ServiceNv, "stubbed 0x05 MapSharedMem");
-                    result = NvInternalResult.Success;
-                    break;
-                case 0x07:
-                    Logger.Info?.Print(LogClass.ServiceNv,"stubbed 0x07 SetAruidWithoutCheck");
-                    result =  NvInternalResult.Success;
-                    break;
-                case 0x09:
-                    Logger.Info?.Print(LogClass.ServiceNv, "stubbed 0x09 DumpFile");
-                    result = NvInternalResult.Success;
-                    break;
-                case 12:
-                    Logger.Info?.Print(LogClass.ServiceNv, "stubbed 12 Ioctl3 (this is definitely a bad idea)");
-                    result = NvInternalResult.Success;
-                    break;
-                default:
-                    Logger.Error?.Print(LogClass.ServiceNv,$"Uh oh! We missed a NvHostGPUDeviceFile case :({command.Number}. We're gonna stub it anyways and watch the world burn.");
-                    result = NvInternalResult.Success;
-                    break;
-            }
-
-            return result;
-        }
+        // public override NvInternalResult Ioctl(NvIoctl command, Span<byte> arguments)
+        // {
+        //     NvInternalResult result = NvInternalResult.NotImplemented;
+        //
+        //     switch (command.Number)
+        //     {
+        //         case 0x01:
+        //             Logger.Info?.Print(LogClass.ServiceNv, "stubbed 0x01 Ioctl (why does this exist what does it do?)");
+        //             result = NvInternalResult.Success;
+        //             break;
+        //         case 0x05:
+        //             Logger.Info?.Print(LogClass.ServiceNv, "stubbed 0x05 MapSharedMem");
+        //             result = NvInternalResult.Success;
+        //             break;
+        //         case 0x07:
+        //             Logger.Info?.Print(LogClass.ServiceNv,"stubbed 0x07 SetAruidWithoutCheck");
+        //             result =  NvInternalResult.Success;
+        //             break;
+        //         case 0x09:
+        //             Logger.Info?.Print(LogClass.ServiceNv, "stubbed 0x09 DumpFile");
+        //             result = NvInternalResult.Success;
+        //             break;
+        //         case 12:
+        //             Logger.Info?.Print(LogClass.ServiceNv, "stubbed 12 Ioctl3 (this is definitely a bad idea)");
+        //             result = NvInternalResult.Success;
+        //             break;
+        //         default:
+        //             Logger.Error?.Print(LogClass.ServiceNv,$"Uh oh! We missed a NvHostGPUDeviceFile case :({command.Number}. We're gonna stub it anyways and watch the world burn.");
+        //             result = NvInternalResult.Success;
+        //             break;
+        //     }
+        //
+        //     return result;
+        // }
 
         public override NvInternalResult Ioctl2(NvIoctl command, Span<byte> arguments, Span<byte> inlineInBuffer)
         {

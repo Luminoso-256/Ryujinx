@@ -87,6 +87,21 @@ namespace Ryujinx.HLE.HOS.Services.Settings
             return ResultCode.Success;
         }
 
+        [CommandHipc(17)]
+        public ResultCode GetAccountSettings(ServiceCtx ctx)
+        {
+            //i have no idea!
+            ctx.ResponseData.Write(0);
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(21)]
+        public ResultCode GetEulaVersions(ServiceCtx ctx)
+        {
+            ctx.ResponseData.Write((int)0);
+            return ResultCode.Success;
+        }
+
         [CommandHipc(23)]
         // GetColorSetId() -> i32
         public ResultCode GetColorSetId(ServiceCtx context)
@@ -104,6 +119,25 @@ namespace Ryujinx.HLE.HOS.Services.Settings
 
             context.Device.System.State.ThemeColor = (ColorSet)colorSetId;
 
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(29)]
+        public ResultCode GetNotificationSettings(ServiceCtx context)
+        {
+            context.ResponseData.Write((UInt32)0); //flags
+            context.ResponseData.Write((UInt32)0); //volume (mute)
+            context.ResponseData.Write(1); //headtime ~ hour
+            context.ResponseData.Write(23); //headtime ~ minute
+            context.ResponseData.Write(4); //tailtime ~ hour
+            context.ResponseData.Write(56); //tailtime ~ minute
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(31)]
+        public ResultCode GetAccountNotificationSettings(ServiceCtx ctx) 
+        {
+            ctx.ResponseData.Write(0);
             return ResultCode.Success;
         }
 
@@ -222,12 +256,29 @@ namespace Ryujinx.HLE.HOS.Services.Settings
             return ResultCode.Success;
         }
 
+        [CommandHipc(39)]
+        public ResultCode GetTvSettings(ServiceCtx ctx)
+        {
+            ctx.ResponseData.Write((UInt32)0); //flags
+            ctx.ResponseData.Write((UInt32)1); //res
+            ctx.ResponseData.Write((UInt32)1); //ctype
+            ctx.ResponseData.Write((UInt32)1); //range
+            ctx.ResponseData.Write((UInt32)0); //cmu
+            ctx.ResponseData.Write((UInt32)0); //underscan
+
+            //I have no idea what these should be
+
+            ctx.ResponseData.Write(1); //gamma
+            ctx.ResponseData.Write(1); //contrast
+            return ResultCode.Success;
+        }
+
         [CommandHipc(47)]
         // GetQuestFlag() -> bool
         public ResultCode GetQuestFlag(ServiceCtx context)
         {
-            Logger.Warning?.Print(LogClass.Service, $"GetQuestFlag was called. Returning true [This was done soley for QCIT]");
-            context.ResponseData.Write(true);
+            //Logger.Warning?.Print(LogClass.Service, $"GetQuestFlag was called. Returning true [This was done soley for QCIT]");
+            context.ResponseData.Write(false);
 
             Logger.Stub?.PrintStub(LogClass.ServiceSet);
 
@@ -257,10 +308,37 @@ namespace Ryujinx.HLE.HOS.Services.Settings
             return ResultCode.Success;
         }
 
+        [CommandHipc(63)]
+        public ResultCode GetPrimaryAlbumStorage(ServiceCtx context)
+        {
+            context.ResponseData.Write(0); //NAND
+            return ResultCode.Success;
+        }
+
         [CommandHipc(68)]
         public ResultCode GetSerialNumber(ServiceCtx context)
         {
             context.ResponseData.Write(new byte[17]);
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(71)]
+        public ResultCode GetSleepSettings(ServiceCtx ctx)
+        {
+            ctx.ResponseData.Write((UInt32)0); //flags
+            ctx.ResponseData.Write((UInt32)5); //handheld sleep plan (never)
+            ctx.ResponseData.Write((UInt32)5); //console sleep plan (never)
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(75)]
+        public ResultCode GetInitialLaunchSettings(ServiceCtx ctx)
+        {
+            var time = DateTime.Now;
+            ctx.ResponseData.Write((UInt32)0); //flags
+            ctx.ResponseData.Write((UInt32)0); //reserved
+            ctx.ResponseData.Write(time.Ticks); //timestamp (time)
+            ctx.ResponseData.Write(new byte[10]); //id for clock src
             return ResultCode.Success;
         }
 
@@ -302,6 +380,14 @@ namespace Ryujinx.HLE.HOS.Services.Settings
             return ResultCode.Success;
         }
 
+        [CommandHipc(79)]
+        public ResultCode GetProductModel(ServiceCtx context)
+        {
+            //I cannot find docs on product models right now and i'm much too lazy to RE it properly 
+            context.ResponseData.Write(1); //this seems a reasonable guess?
+            return ResultCode.Success;
+        }
+
         [CommandHipc(90)]
         // GetMiiAuthorId() -> nn::util::Uuid
         public ResultCode GetMiiAuthorId(ServiceCtx context)
@@ -311,6 +397,48 @@ namespace Ryujinx.HLE.HOS.Services.Settings
 
             context.ResponseData.Write(Mii.Helper.GetDeviceId());
 
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(95)]
+        public ResultCode GetAutoUpdateEnableFlag(ServiceCtx context)
+        {
+            context.ResponseData.Write(0);
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(99)]
+        public ResultCode GetBatteryPercentageFlag(ServiceCtx ctx)
+        {
+            ctx.ResponseData.Write((byte)0x1);
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(124)]
+        public ResultCode GetErrorReportSharePermission(ServiceCtx context)
+        {
+            context.ResponseData.Write(2); //why not?
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(126)]
+        public ResultCode GetAppletLaunchFlags(ServiceCtx context)
+        {
+            context.ResponseData.Write(0x12); //why not?
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(136)]
+        public ResultCode GetKeyboardLayout(ServiceCtx context)
+        {
+            context.ResponseData.Write(1);
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(170)]
+        public ResultCode GetChineseTraditionalInputMethod(ServiceCtx context)
+        {
+            context.ResponseData.Write(1);
             return ResultCode.Success;
         }
 

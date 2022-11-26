@@ -1,3 +1,4 @@
+using LibHac;
 using LibHac.Ns;
 using Ryujinx.Common;
 using Ryujinx.Common.Logging;
@@ -347,6 +348,14 @@ namespace Ryujinx.HLE.HOS.Services.Friend.ServiceCreator
 
             Logger.Stub?.PrintStub(LogClass.ServiceFriend);
 
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(20701)]
+        public ResultCode GetPlayHistoryStatistics(ServiceCtx context)
+        {
+            //no idea!
+            context.ResponseData.Write(new byte[8]);
             return ResultCode.Success;
         }
     }

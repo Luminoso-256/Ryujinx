@@ -1,6 +1,9 @@
 ﻿using Ryujinx.Common.Logging;
+using Ryujinx.HLE.HOS.Ipc;
+using Ryujinx.HLE.HOS.Kernel.Common;
 using Ryujinx.HLE.HOS.Services.Hid.HidServer;
 using Ryujinx.HLE.HOS.Services.Hid.Types;
+using System;
 
 namespace Ryujinx.HLE.HOS.Services.Hid
 {
@@ -61,6 +64,40 @@ namespace Ryujinx.HLE.HOS.Services.Hid
             context.ResponseData.Write((byte)appletFooterUiType);
 
             return resultCode;
+        }
+
+        private int _evHandle;
+
+        [CommandHipc(751)]
+        public ResultCode AquireJoyDetachOnBluetoothOffEventHandle(ServiceCtx ctx)
+        {
+            if (_evHandle == 0)
+            {
+                if (ctx.Process.HandleTable.GenerateHandle(ctx.Device.System.GenericPlaceholderEvent.ReadableEvent, out _evHandle) != KernelResult.Success)
+                {
+                    throw new InvalidOperationException("Out of handles!");
+                }
+            }
+
+            ctx.Response.HandleDesc = IpcHandleDesc.MakeCopy(_evHandle);
+
+            Logger.Stub?.PrintStub(LogClass.ServiceAm);
+
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(850)]
+        public ResultCode IsUSBFullKeyControllerEnabled(ServiceCtx context)
+        {
+            context.ResponseData.Write(false);
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(1153)]
+        public ResultCode GetTouchScreenDefaultConfiguration(ServiceCtx context)
+        {
+            context.ResponseData.Write(0);//No idea.
+            return ResultCode.Success;
         }
 
         private ResultCode GetAppletFooterUiTypeImpl(ServiceCtx context, out AppletFooterUiType appletFooterUiType)

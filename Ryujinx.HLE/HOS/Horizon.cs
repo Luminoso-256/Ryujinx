@@ -106,6 +106,14 @@ namespace Ryujinx.HLE.HOS
 
         internal KEvent DisplayResolutionChangeEvent { get; private set; }
         internal KEvent AquireSleeplockEvent { get; private set; }
+        internal KEvent SystemUpdateNotificationEvent { get; private set; }
+        internal KEvent PctlSyncEvent { get; private set; }
+        internal KEvent PctlUnlinkEvent { get; private set; }
+        internal KEvent NewsGetEvent { get; private set; }
+        internal KEvent AppRecordUpdateEvent { get; private set; }
+        internal KEvent GamecardUpdateEvent { get; private set; }
+        internal KEvent DownloadTaskEvent { get; private set; }
+        internal KEvent GenericPlaceholderEvent { get; private set; } // for when you just don't care anymore.
 
         public KeySet KeySet => Device.FileSystem.KeySet;
 
@@ -193,6 +201,14 @@ namespace Ryujinx.HLE.HOS
 
             DisplayResolutionChangeEvent = new KEvent(KernelContext);
             AquireSleeplockEvent = new KEvent(KernelContext);
+            SystemUpdateNotificationEvent = new KEvent(KernelContext);
+            NewsGetEvent = new KEvent(KernelContext);
+            PctlSyncEvent = new KEvent(KernelContext);
+            PctlUnlinkEvent = new KEvent(KernelContext);
+            AppRecordUpdateEvent = new KEvent(KernelContext);
+            GamecardUpdateEvent = new KEvent(KernelContext);
+            DownloadTaskEvent = new KEvent(KernelContext);
+            GenericPlaceholderEvent = new KEvent(KernelContext);
 
             SharedFontManager = new SharedFontManager(device, fontStorage);
             AccountManager    = device.Configuration.AccountManager;
@@ -404,6 +420,23 @@ namespace Ryujinx.HLE.HOS
         public void SignalAquireSleeplockEvent()
         {
             AquireSleeplockEvent.ReadableEvent.Signal();
+        }
+
+        public void SignalSystemUpdateEvent()
+        {
+            SystemUpdateNotificationEvent.ReadableEvent.Signal();
+        }
+        public void SignalPctlSync()
+        {
+            PctlSyncEvent.ReadableEvent.Signal();
+        }
+        public void SignalPctlUnlink()
+        {
+            PctlUnlinkEvent.ReadableEvent.Signal();
+        }
+        public void SignalNews()
+        {
+           NewsGetEvent.ReadableEvent.Signal();
         }
 
         public void SignalVsync()

@@ -23,6 +23,20 @@ namespace Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService.Lib
 
                 _appletStandalone.InputData.Enqueue(miiEditInputData);
             }
+            if (context.Device.Application.TitleId == 0x010000000000100D)
+            {
+                // Create MiiEdit data.
+                _appletStandalone = new AppletStandalone()
+                {
+                    AppletId = AppletId.MiiEdit,
+                    LibraryAppletMode = LibraryAppletMode.AllForeground
+                };
+
+                byte[] miiEditInputData = new byte[0x100];
+                miiEditInputData[0] = 0x03; // Hardcoded unknown value.
+
+                _appletStandalone.InputData.Enqueue(miiEditInputData);
+            }
             else
             {
                 throw new NotImplementedException($"{context.Device.Application.TitleId} applet is not implemented.");

@@ -1,4 +1,6 @@
 using Ryujinx.Common.Logging;
+using Ryujinx.HLE.HOS.Ipc;
+using Ryujinx.HLE.HOS.Kernel.Common;
 using Ryujinx.HLE.HOS.Services.Arp;
 using System;
 
@@ -13,6 +15,10 @@ namespace Ryujinx.HLE.HOS.Services.Pctl.ParentalControlServiceFactory
         private ulong                    _titleId;
         private ParentalControlFlagValue _parentalControlFlag;
         private int[]                    _ratingAge;
+
+        private int _evHandleS;
+        private int _evHandleU;
+        private int _evHandleGpc;
 
 #pragma warning disable CS0414
         // TODO: Find where they are set.
@@ -32,6 +38,116 @@ namespace Ryujinx.HLE.HOS.Services.Pctl.ParentalControlServiceFactory
             {
                 Initialize(context);
             }
+        }
+
+        [CommandHipc(1046)]
+        public ResultCode DisableFeaturesForReset(ServiceCtx ctx)
+        {
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(1006)]
+        public ResultCode IsRestrictionTemporaryUnlocked(ServiceCtx ctx)
+        {
+            ctx.ResponseData.Write(true);
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(1457)]
+        public ResultCode GetPlayTimerEventToRequestSuspension(ServiceCtx ctx)
+        {
+            if (_evHandleGpc == 0)
+            {
+                if (ctx.Process.HandleTable.GenerateHandle(ctx.Device.System.GenericPlaceholderEvent.ReadableEvent, out _evHandleGpc) != KernelResult.Success)
+                {
+                    throw new InvalidOperationException("Out of handles!");
+                }
+            }
+
+            ctx.Response.HandleDesc = IpcHandleDesc.MakeCopy(_evHandleGpc);
+
+            Logger.Stub?.PrintStub(LogClass.ServiceAm);
+
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(1432)]
+        public ResultCode GetSynchronizationEvent(ServiceCtx ctx)
+        {
+            if (_evHandleS == 0)
+            {
+                if (ctx.Process.HandleTable.GenerateHandle(ctx.Device.System.PctlSyncEvent.ReadableEvent, out _evHandleS) != KernelResult.Success)
+                {
+                    throw new InvalidOperationException("Out of handles!");
+                }
+            }
+
+            ctx.Response.HandleDesc = IpcHandleDesc.MakeCopy(_evHandleS);
+
+            Logger.Stub?.PrintStub(LogClass.ServiceAm);
+
+            return ResultCode.Success;
+        }
+        [CommandHipc(1473)]
+        public ResultCode GetUnlinkedEvent(ServiceCtx ctx)
+        {
+            if (_evHandleU == 0)
+            {
+                if (ctx.Process.HandleTable.GenerateHandle(ctx.Device.System.PctlUnlinkEvent.ReadableEvent, out _evHandleU) != KernelResult.Success)
+                {
+                    throw new InvalidOperationException("Out of handles!");
+                }
+            }
+
+            ctx.Response.HandleDesc = IpcHandleDesc.MakeCopy(_evHandleU);
+
+            Logger.Stub?.PrintStub(LogClass.ServiceAm);
+
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(1456)]
+        public ResultCode GetPlayTimerSettings(ServiceCtx ctx)
+        {
+            ctx.ResponseData.Write(0);
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(1458)]
+        public ResultCode IsPlayTimerAlarmDisabled(ServiceCtx ctx)
+        {
+            ctx.ResponseData.Write(true);
+            return ResultCode.Success; 
+        }
+
+        [CommandHipc(1032)]
+        public ResultCode GetSafetyLevel(ServiceCtx ctx)
+        {
+            ctx.ResponseData.Write(0);
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(1039)]
+        public ResultCode GetFreeCommunicationAppListCount(ServiceCtx ctx)
+        {
+            ctx.ResponseData.Write(0);
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(1035)]
+        public ResultCode GetCurrentSettings(ServiceCtx ctx)
+        {
+            ctx.ResponseData.Write(0); //bad code
+            ctx.ResponseData.Write(0);
+            ctx.ResponseData.Write(0);
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(1403)]
+        public ResultCode IsPairingActive(ServiceCtx ctx)
+        {
+            ctx.ResponseData.Write(false);
+            return ResultCode.Success;
         }
 
         [CommandHipc(1)] // 4.0.0+

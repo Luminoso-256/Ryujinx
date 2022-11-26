@@ -8,6 +8,12 @@
 
         public LblControllerServer(ServiceCtx context) : base(context) { }
 
+        [CommandHipc(1)]
+        public ResultCode Unknown1(ServiceCtx ctx)
+        {
+            return ResultCode.Success;
+        }
+
         protected override void SetCurrentBrightnessSettingForVrMode(float currentBrightnessSettingForVrMode)
         {
             if (float.IsNaN(currentBrightnessSettingForVrMode) || float.IsInfinity(currentBrightnessSettingForVrMode))

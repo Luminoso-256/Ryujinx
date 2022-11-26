@@ -1,17 +1,20 @@
-using Ryujinx.Common.Logging;
+﻿using Ryujinx.Common.Logging;
 using Ryujinx.HLE.HOS.Ipc;
 using Ryujinx.HLE.HOS.Kernel.Common;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService.SystemAppletProxy
+namespace Ryujinx.HLE.HOS.Services.Notification
 {
-    class IGlobalStateController : IpcService
+    internal class INotificationSystemEventAccessor : IpcService
     {
-        public IGlobalStateController() { }
+        public INotificationSystemEventAccessor(ServiceCtx context){}
         private int _evHandle;
-
-        [CommandHipc(15)]
-        public ResultCode GetHdcpAuthenticationFailedEvent(ServiceCtx ctx)
+        [CommandHipc(0)]
+        public ResultCode Unk0(ServiceCtx ctx)
         {
             if (_evHandle == 0)
             {
