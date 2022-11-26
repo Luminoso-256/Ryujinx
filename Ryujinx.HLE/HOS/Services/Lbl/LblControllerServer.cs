@@ -13,6 +13,11 @@
         {
             return ResultCode.Success;
         }
+        [CommandHipc(19)]
+        public ResultCode SetCurrentBrightnessMapping(ServiceCtx ctx)
+        {
+            return ResultCode.Success;
+        }
 
         protected override void SetCurrentBrightnessSettingForVrMode(float currentBrightnessSettingForVrMode)
         {
