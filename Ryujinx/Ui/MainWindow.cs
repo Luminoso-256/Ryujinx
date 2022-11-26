@@ -1288,8 +1288,8 @@ namespace Ryujinx.Ui
 
         private void Load_Mii_Edit_Applet(object sender, EventArgs args)
         {
-            string contentPath = _contentManager.GetInstalledContentPath(0x0100000000001009, StorageId.BuiltInSystem, NcaContentType.Program);
-
+            //   string contentPath = _contentManager.GetInstalledContentPath(0x0100000000001009, StorageId.BuiltInSystem, NcaContentType.Program);
+            string contentPath = _contentManager.GetInstalledContentPath(0x0100000000001000, StorageId.BuiltInSystem, NcaContentType.Program);
             LoadApplication(contentPath);
         }
 

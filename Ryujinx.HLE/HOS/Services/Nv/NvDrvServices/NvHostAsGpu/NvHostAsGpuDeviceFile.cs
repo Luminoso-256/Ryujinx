@@ -72,6 +72,7 @@ namespace Ryujinx.HLE.HOS.Services.Nv.NvDrvServices.NvHostAsGpu
                         break;
                     case 0x07:
                         Logger.Info?.Print(LogClass.ServiceNv, $"Number 0x07 triggered");
+                        result = NvInternalResult.Success;
                         break;
                     case 0x08:
                         result = CallIoctlMethod<GetVaRegionsArguments>(GetVaRegions, arguments);
