@@ -6,22 +6,25 @@
         public IAudioController(ServiceCtx context) { }
 
         [CommandHipc(12)]
-        public ResultCode getForceMutePolicy(ServiceCtx ctx)
+        public ResultCode GetForceMutePolicy(ServiceCtx ctx)
         {
-            ctx.ResponseData.Write(true);//my best guess
+            //https://github.com/switchbrew/libnx/blob/4a850437f2b399f41bd23536b5300062ed8011e4/nx/include/switch/services/audctl.h#L30
+            ctx.ResponseData.Write(0);
             return ResultCode.Success;
         }
 
         [CommandHipc(13)]
-        public ResultCode GetOutputMode(ServiceCtx ctx) //THIS IS DOCUMENTED NOWHERE!!!
+        public ResultCode GetOutputMode(ServiceCtx ctx) 
         {
-            ctx.ResponseData.Write(0);
+            //https://github.com/switchbrew/libnx/blob/4a850437f2b399f41bd23536b5300062ed8011e4/nx/include/switch/services/audctl.h#L22
+            ctx.ResponseData.Write(4);
             return ResultCode.Success;
         }
 
         [CommandHipc(18)]
         public ResultCode GetHeadphoneOutputLevelMode(ServiceCtx ctx)//THIS IS DOCUMENTED NOWHERE!!!
         {
+            //https://github.com/switchbrew/libnx/blob/4a850437f2b399f41bd23536b5300062ed8011e4/nx/include/switch/services/audctl.h#L30
             ctx.ResponseData.Write(0);
             return ResultCode.Success;
         }

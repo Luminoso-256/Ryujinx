@@ -4,6 +4,7 @@ using Ryujinx.Common;
 using Ryujinx.Common.Logging;
 using Ryujinx.HLE.HOS.Kernel.Memory;
 using Ryujinx.HLE.HOS.Services.Audio.AudioRenderer;
+using System;
 
 namespace Ryujinx.HLE.HOS.Services.Audio
 {
@@ -58,7 +59,18 @@ namespace Ryujinx.HLE.HOS.Services.Audio
         // GetWorkBufferSize(nn::audio::detail::AudioRendererParameterInternal parameter) -> u64 workBufferSize
         public ResultCode GetAudioRendererWorkBufferSize(ServiceCtx context)
         {
-            AudioRendererConfiguration parameter = context.RequestData.ReadStruct<AudioRendererConfiguration>();
+            //some... *special snowflakes* don't seem to do this quite right.
+            AudioRendererConfiguration parameter = new();
+            try
+            {
+                parameter = context.RequestData.ReadStruct<AudioRendererConfiguration>();
+            }
+            catch (Exception e)
+            {
+                //good job. you misbehaved enough to cause problems. You get a placeholder value 
+                context.ResponseData.Write(0x0000000000038000);
+                return ResultCode.Success;
+            }
 
             if (BehaviourContext.CheckValidRevision(parameter.Revision))
             {

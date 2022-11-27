@@ -109,7 +109,7 @@ namespace Ryujinx.HLE.HOS.Services.Pctl.ParentalControlServiceFactory
         [CommandHipc(1456)]
         public ResultCode GetPlayTimerSettings(ServiceCtx ctx)
         {
-            ctx.ResponseData.Write(0);
+            ctx.ResponseData.Write(new byte[0x34]); //undocumented struct.Woohoo.
             return ResultCode.Success;
         }
 
@@ -123,7 +123,7 @@ namespace Ryujinx.HLE.HOS.Services.Pctl.ParentalControlServiceFactory
         [CommandHipc(1032)]
         public ResultCode GetSafetyLevel(ServiceCtx ctx)
         {
-            ctx.ResponseData.Write(0);
+            ctx.ResponseData.Write((UInt32)1);
             return ResultCode.Success;
         }
 

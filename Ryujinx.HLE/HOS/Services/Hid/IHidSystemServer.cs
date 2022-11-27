@@ -96,7 +96,9 @@ namespace Ryujinx.HLE.HOS.Services.Hid
         [CommandHipc(1153)]
         public ResultCode GetTouchScreenDefaultConfiguration(ServiceCtx context)
         {
-            context.ResponseData.Write(0);//No idea.
+            https://github.com/switchbrew/libnx/blob/93db7abb032823747d9760426401dc05693afd21/nx/include/switch/services/hid.h
+            context.ResponseData.Write((byte)1); //TouchScreenMode - Finger 
+            context.ResponseData.Write((byte)0); //reserved
             return ResultCode.Success;
         }
 

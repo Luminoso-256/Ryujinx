@@ -52,8 +52,8 @@ namespace Ryujinx.HLE.HOS.Services.Settings
 
             const string platform   = "NX";
             const string unknownHex = "7fbde2b0bba4d14107bf836e4643043d9f6c8e47";
-            const string version    = "3.0.0";
-            const string build      = "NintendoSDK Firmware for NX 3.0.0-10.0";
+            const string version    = "10.0.0";
+            const string build      = "NintendoSDK Firmware for NX 10.0.0-10.0";
 
             // http://switchbrew.org/index.php?title=System_Version_Title
             using (MemoryStream ms = new MemoryStream(0x100))
@@ -90,8 +90,8 @@ namespace Ryujinx.HLE.HOS.Services.Settings
         [CommandHipc(17)]
         public ResultCode GetAccountSettings(ServiceCtx ctx)
         {
-            //i have no idea!
-            ctx.ResponseData.Write(0);
+            //https://github.com/switchbrew/libnx/blob/c4c9a6af3c3af163306d114d2354314be8f49d50/nx/include/switch/services/set.h#L378
+            ctx.ResponseData.Write((byte)0b00000001);
             return ResultCode.Success;
         }
 
@@ -384,7 +384,7 @@ namespace Ryujinx.HLE.HOS.Services.Settings
         public ResultCode GetProductModel(ServiceCtx context)
         {
             //I cannot find docs on product models right now and i'm much too lazy to RE it properly 
-            context.ResponseData.Write(1); //this seems a reasonable guess?
+            context.ResponseData.Write(1); //Erista Switch (launch-day model) https://github.com/switchbrew/libnx/blob/c4c9a6af3c3af163306d114d2354314be8f49d50/nx/include/switch/services/set.h#L27
             return ResultCode.Success;
         }
 
@@ -410,14 +410,14 @@ namespace Ryujinx.HLE.HOS.Services.Settings
         [CommandHipc(99)]
         public ResultCode GetBatteryPercentageFlag(ServiceCtx ctx)
         {
-            ctx.ResponseData.Write((byte)0x1);
+            ctx.ResponseData.Write(true);
             return ResultCode.Success;
         }
 
         [CommandHipc(124)]
         public ResultCode GetErrorReportSharePermission(ServiceCtx context)
         {
-            context.ResponseData.Write(2); //why not?
+            context.ResponseData.Write((UInt32)2); //Share permission~ Denied  https://github.com/switchbrew/libnx/blob/c4c9a6af3c3af163306d114d2354314be8f49d50/nx/include/switch/services/set.h#L182
             return ResultCode.Success;
         }
 

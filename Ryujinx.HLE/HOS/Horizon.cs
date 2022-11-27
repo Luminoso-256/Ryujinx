@@ -114,7 +114,7 @@ namespace Ryujinx.HLE.HOS
         internal KEvent GamecardUpdateEvent { get; private set; }
         internal KEvent DownloadTaskEvent { get; private set; }
         internal KEvent GenericPlaceholderEvent { get; private set; } // for when you just don't care anymore.
-
+        internal KEvent AppletStateChangedEvent { get; private set; }
         public KeySet KeySet => Device.FileSystem.KeySet;
 
         private bool _isDisposed;
@@ -209,6 +209,7 @@ namespace Ryujinx.HLE.HOS
             GamecardUpdateEvent = new KEvent(KernelContext);
             DownloadTaskEvent = new KEvent(KernelContext);
             GenericPlaceholderEvent = new KEvent(KernelContext);
+            AppletStateChangedEvent = new KEvent(KernelContext);
 
             SharedFontManager = new SharedFontManager(device, fontStorage);
             AccountManager    = device.Configuration.AccountManager;
@@ -417,6 +418,10 @@ namespace Ryujinx.HLE.HOS
             DisplayResolutionChangeEvent.ReadableEvent.Signal();
         }
 
+        public void SignalAppletStateChanged()
+        {
+            AppletStateChangedEvent.ReadableEvent.Signal();
+        }
         public void SignalAquireSleeplockEvent()
         {
             AquireSleeplockEvent.ReadableEvent.Signal();

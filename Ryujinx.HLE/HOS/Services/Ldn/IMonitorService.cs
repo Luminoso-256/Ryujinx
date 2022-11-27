@@ -13,7 +13,8 @@ namespace Ryujinx.HLE.HOS.Services.Ldn
         [CommandHipc(0)]
         public ResultCode GetStateForMonitor(ServiceCtx ctx)
         {
-            ctx.ResponseData.Write(0); //no idea. literally none.
+            //https://github.com/switchbrew/libnx/blob/c5a9a909a91657a9818a3b7e18c9b91ff0cbb6e3/nx/include/switch/services/ldn.h
+            ctx.ResponseData.Write(1); //Initialized.
             return ResultCode.Success;
         }
 

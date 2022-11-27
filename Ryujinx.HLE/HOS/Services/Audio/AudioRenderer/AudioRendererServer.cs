@@ -1,9 +1,11 @@
-﻿using Ryujinx.Common.Logging;
+﻿using Ryujinx.Common;
+using Ryujinx.Common.Logging;
 using Ryujinx.HLE.HOS.Ipc;
 using Ryujinx.HLE.HOS.Kernel.Common;
 using Ryujinx.HLE.HOS.Kernel.Threading;
 using System;
 using System.Buffers;
+using System.Collections.Generic;
 
 namespace Ryujinx.HLE.HOS.Services.Audio.AudioRenderer
 {
@@ -53,41 +55,45 @@ namespace Ryujinx.HLE.HOS.Services.Audio.AudioRenderer
         }
 
         [CommandHipc(4)]
-        // RequestUpdate(buffer<nn::audio::detail::AudioRendererUpdateDataHeader, 5> input)
-        // -> (buffer<nn::audio::detail::AudioRendererUpdateDataHeader, 6> output, buffer<nn::audio::detail::AudioRendererUpdateDataHeader, 6> performanceOutput)
-        public ResultCode RequestUpdate(ServiceCtx context)
-        {
-            ulong inputPosition = context.Request.SendBuff[0].Position;
-            ulong inputSize = context.Request.SendBuff[0].Size;
-
-            ulong outputPosition = context.Request.ReceiveBuff[0].Position;
-            ulong outputSize = context.Request.ReceiveBuff[0].Size;
-
-            ulong performanceOutputPosition = context.Request.ReceiveBuff[1].Position;
-            ulong performanceOutputSize = context.Request.ReceiveBuff[1].Size;
-
-            ReadOnlyMemory<byte> input = context.Memory.GetSpan(inputPosition, (int)inputSize).ToArray();
-
-            Memory<byte> output = new byte[outputSize];
-            Memory<byte> performanceOutput = new byte[performanceOutputSize];
-
-            using MemoryHandle outputHandle = output.Pin();
-            using MemoryHandle performanceOutputHandle = performanceOutput.Pin();
-
-            ResultCode result = _impl.RequestUpdate(output, performanceOutput, input);
-
-            if (result == ResultCode.Success)
-            {
-                context.Memory.Write(outputPosition, output.Span);
+         //RequestUpdate(buffer<nn::audio::detail::AudioRendererUpdateDataHeader, 5> input)
+         //-> (buffer<nn::audio::detail::AudioRendererUpdateDataHeader, 6> output, buffer<nn::audio::detail::AudioRendererUpdateDataHeader, 6> performanceOutput)
+         public ResultCode RequestUpdate(ServiceCtx context)
+         {
+             ulong inputPosition = context.Request.SendBuff[0].Position;
+             ulong inputSize = context.Request.SendBuff[0].Size;
+        
+             ulong outputPosition = context.Request.ReceiveBuff[0].Position;
+             ulong outputSize = context.Request.ReceiveBuff[0].Size;
+        
+             ulong performanceOutputPosition = context.Request.ReceiveBuff[1].Position;
+             ulong performanceOutputSize = context.Request.ReceiveBuff[1].Size;
+        
+             ReadOnlyMemory<byte> input = context.Memory.GetSpan(inputPosition, (int)inputSize).ToArray();
+        
+             Memory<byte> output = new byte[outputSize];
+             Memory<byte> performanceOutput = new byte[performanceOutputSize];
+        
+             using MemoryHandle outputHandle = output.Pin();
+             using MemoryHandle performanceOutputHandle = performanceOutput.Pin();
+        
+             ResultCode result = _impl.RequestUpdate(output, performanceOutput, input);
+        
+             if (result == ResultCode.Success)
+             {
+                 context.Memory.Write(outputPosition, output.Span);
+             //     context.Memory.Write(outputPosition+inputSize, output.Span);
                 context.Memory.Write(performanceOutputPosition, performanceOutput.Span);
+             }
+             else
+             {
+                 Logger.Error?.Print(LogClass.ServiceAudio, $"Error while processing renderer update: 0x{(int)result:X}");
+                 context.Memory.Write(outputPosition, output.Span);
+                 context.Memory.Write(performanceOutputPosition, performanceOutput.Span);
             }
-            else
-            {
-                Logger.Error?.Print(LogClass.ServiceAudio, $"Error while processing renderer update: 0x{(int)result:X}");
-            }
+            
 
             return result;
-        }
+         }
 
         [CommandHipc(5)]
         // Start()

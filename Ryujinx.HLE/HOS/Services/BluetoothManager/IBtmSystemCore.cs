@@ -42,7 +42,7 @@ namespace Ryujinx.HLE.HOS.Services.BluetoothManager
             }
           
             ctx.Response.HandleDesc = IpcHandleDesc.MakeCopy(_genericEvHandle);
-
+            ctx.ResponseData.Write(true);
             Logger.Stub?.PrintStub(LogClass.ServiceAm);
 
             return ResultCode.Success;

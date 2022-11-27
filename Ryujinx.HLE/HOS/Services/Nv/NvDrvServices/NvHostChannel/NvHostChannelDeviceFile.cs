@@ -102,6 +102,8 @@ namespace Ryujinx.HLE.HOS.Services.Nv.NvDrvServices.NvHostChannel
                     case 0x03:
                         result = CallIoctlMethod<uint>(SetTimeout, arguments);
                         break;
+                    case 0x05:
+                        return NvInternalResult.Success;
                     case 0x08:
                         result = SubmitGpfifo(arguments);
                         break;

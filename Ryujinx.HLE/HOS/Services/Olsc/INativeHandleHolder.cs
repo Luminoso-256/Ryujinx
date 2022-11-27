@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Ryujinx.Common.Logging;
+using Ryujinx.HLE.HOS.Ipc;
+using Ryujinx.HLE.HOS.Kernel.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,11 +13,20 @@ namespace Ryujinx.HLE.HOS.Services.Olsc
     {
         public INativeHandleHolder(ServiceCtx context) { }
 
-        [CommandHipc(0)]
-        public ResultCode GetNativeHandle(ServiceCtx ctx)
+        private int _genericEventHandle;
+
+        [CommandHipc(9)]
+        public ResultCode GetNativeHandle(ServiceCtx context) 
         {
-            //I hope it doesn't mind a zero?
-            ctx.ResponseData.Write(0);
+            if (_genericEventHandle == 0)
+            {
+                if (context.Process.HandleTable.GenerateHandle(context.Device.System.GenericPlaceholderEvent.ReadableEvent, out _genericEventHandle) != KernelResult.Success)
+                {
+                    throw new InvalidOperationException("Out of handles!");
+                }
+            }
+
+            context.Response.HandleDesc = IpcHandleDesc.MakeCopy(_genericEventHandle);
             return ResultCode.Success;
         }
     }
