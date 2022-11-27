@@ -115,6 +115,8 @@ namespace Ryujinx.HLE.HOS
         internal KEvent DownloadTaskEvent { get; private set; }
         internal KEvent GenericPlaceholderEvent { get; private set; } // for when you just don't care anymore.
         internal KEvent AppletStateChangedEvent { get; private set; }
+        internal KEvent PSMStateChangedEvent { get; private set; }
+        internal KEvent LockedButtonHomeMenuEvent { get; private set; }
         public KeySet KeySet => Device.FileSystem.KeySet;
 
         private bool _isDisposed;
@@ -210,6 +212,8 @@ namespace Ryujinx.HLE.HOS
             DownloadTaskEvent = new KEvent(KernelContext);
             GenericPlaceholderEvent = new KEvent(KernelContext);
             AppletStateChangedEvent = new KEvent(KernelContext);
+            PSMStateChangedEvent = new KEvent(KernelContext);
+            LockedButtonHomeMenuEvent = new KEvent(KernelContext);
 
             SharedFontManager = new SharedFontManager(device, fontStorage);
             AccountManager    = device.Configuration.AccountManager;
@@ -413,11 +417,20 @@ namespace Ryujinx.HLE.HOS
             return false;
         }
 
+        public void SignalLockedButtonHomeChange()
+        {
+            LockedButtonHomeMenuEvent.ReadableEvent.Signal();
+        }
+
         public void SignalDisplayResolutionChange()
         {
             DisplayResolutionChangeEvent.ReadableEvent.Signal();
         }
 
+        public void SignalPSMStateChanged()
+        {
+            PSMStateChangedEvent.ReadableEvent.Signal();
+        }
         public void SignalAppletStateChanged()
         {
             AppletStateChangedEvent.ReadableEvent.Signal();

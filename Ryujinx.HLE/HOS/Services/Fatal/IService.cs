@@ -37,6 +37,13 @@ namespace Ryujinx.HLE.HOS.Services.Fatal
         public ResultCode ThrowFatalWithCpuContext(ServiceCtx context)
         {
             ResultCode  resultCode  = (ResultCode)context.RequestData.ReadUInt64();
+            if (resultCode == ResultCode.Success)
+            {
+                // WHY?!
+                Logger.Error?.Print(LogClass.Application, "Some *weird* process just tried to throw a fatal with 0x0 error.");
+                return ResultCode.Success;
+
+            }
             FatalPolicy fatalPolicy = (FatalPolicy)context.RequestData.ReadUInt32();
             ulong       pid         = context.Request.HandleDesc.PId;
 

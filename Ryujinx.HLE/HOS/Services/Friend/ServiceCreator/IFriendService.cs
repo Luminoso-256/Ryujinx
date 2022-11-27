@@ -351,6 +351,27 @@ namespace Ryujinx.HLE.HOS.Services.Friend.ServiceCreator
             return ResultCode.Success;
         }
 
+        //TLDR: Ryujinx default user is Lonely
+
+        [CommandHipc(20100)]
+        public ResultCode GetFriendCount(ServiceCtx ctx)
+        {
+            ctx.ResponseData.Write((UInt32)0);
+            return ResultCode.Success;
+        }
+        [CommandHipc(20101)]
+        public ResultCode GetNewlyFriendCount(ServiceCtx ctx)
+        {
+            ctx.ResponseData.Write((UInt32)0);
+            return ResultCode.Success;
+        }
+        [CommandHipc(20200)]
+        public ResultCode GetRecievedFriendRequestCount(ServiceCtx ctx)
+        {
+            ctx.ResponseData.Write((UInt32)0);
+            return ResultCode.Success;
+        }
+
         [CommandHipc(20701)]
         public ResultCode GetPlayHistoryStatistics(ServiceCtx context)
         {

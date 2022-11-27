@@ -107,6 +107,21 @@ namespace Ryujinx.HLE.HOS.Services.Ns
 
             return ResultCode.Success;
         }
+
+        [CommandHipc(47)]
+        public ResultCode GetTotalSpaceSize(ServiceCtx context)
+        {
+            context.ResponseData.Write((long)32000000000);
+            return ResultCode.Success;
+        }
+        [CommandHipc(48)]
+
+        public ResultCode GetFreeSpaceSize(ServiceCtx context)
+        {
+            context.ResponseData.Write((long)28000000000);
+            return ResultCode.Success;
+        }
+
         [CommandHipc(52)]
         public ResultCode GetGameCardUpdateDetectionEvent(ServiceCtx ctx)
         {

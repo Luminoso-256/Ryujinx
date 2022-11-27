@@ -125,5 +125,12 @@ namespace Ryujinx.HLE.HOS.Services.Account.Acc
 
             return ResultCode.Success;
         }
+
+        [CommandHipc(250)]
+        public ResultCode GetBaasAccountAdministrator(ServiceCtx ctx)
+        {
+            MakeObject(ctx, new IAdministrator(ctx));
+            return ResultCode.Success;
+        }
     }
 }

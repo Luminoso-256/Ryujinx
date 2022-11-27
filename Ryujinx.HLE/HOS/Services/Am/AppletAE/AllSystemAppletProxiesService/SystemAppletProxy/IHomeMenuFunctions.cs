@@ -3,6 +3,7 @@ using Ryujinx.HLE.HOS.Ipc;
 using Ryujinx.HLE.HOS.Kernel.Common;
 using Ryujinx.HLE.HOS.Kernel.Threading;
 using System;
+using System.Threading.Tasks;
 
 namespace Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService.SystemAppletProxy
 {
@@ -22,7 +23,22 @@ namespace Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService.Sys
         public ResultCode RequestToGetForeground(ServiceCtx context)
         {
             Logger.Stub?.PrintStub(LogClass.ServiceAm);
+            return ResultCode.Success;
+        }
 
+        [CommandHipc(11)]
+        public ResultCode LockForeground(ServiceCtx context)
+        {
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(20)]
+        public ResultCode PopFromGeneralChannel(ServiceCtx ctx)
+        {
+            //https://switchbrew.org/wiki/Applet_Manager_services#PushToGeneralChannel
+            //"RequestHomeMenu"
+            MakeObject(ctx, new AppletAE.IStorage(new byte[]{0x53,0x41, 0x4d,0x53, 0x01,0x00, 0x00,0x00, 
+                /*the magic bit*/ 0x03,0x00, 0x00,0x00, 0x01,0x00, 0x00,0x00}));
             return ResultCode.Success;
         }
 
@@ -39,9 +55,20 @@ namespace Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService.Sys
             }
 
             context.Response.HandleDesc = IpcHandleDesc.MakeCopy(_channelEventHandle);
+            Task.Factory.StartNew(() =>
+            {
+                System.Threading.Thread.Sleep(500);
+                _channelEvent.ReadableEvent.Signal();
+            });
 
             Logger.Stub?.PrintStub(LogClass.ServiceAm);
+            return ResultCode.Success;
+        }
 
+        [CommandHipc(31)]
+        public ResultCode GetWriterLockAccessorEx(ServiceCtx context)
+        {
+            MakeObject(context,new ILockAccessor(context,context.RequestData.ReadUInt32()));
             return ResultCode.Success;
         }
     }

@@ -1,6 +1,7 @@
 using Ryujinx.Common;
 using Ryujinx.Common.Logging;
 using Ryujinx.Common.Memory;
+using Ryujinx.Cpu;
 using Ryujinx.HLE.HOS.Applets;
 using Ryujinx.HLE.HOS.Ipc;
 using Ryujinx.HLE.HOS.Kernel.Common;
@@ -27,6 +28,7 @@ namespace Ryujinx.HLE.HOS.Services.Vi.RootService
         }
 
         private readonly List<DisplayInfo>               _displayInfo;
+        private readonly List<DisplayInfo> _displayInfoForListCmd;
         private readonly Dictionary<ulong, DisplayState> _openDisplays;
 
         private int _vsyncEventHandle;
@@ -35,6 +37,7 @@ namespace Ryujinx.HLE.HOS.Services.Vi.RootService
         {
             _serviceType  = serviceType;
             _displayInfo  = new List<DisplayInfo>();
+            _displayInfoForListCmd = new();
             _openDisplays = new Dictionary<ulong, DisplayState>();
 
             void AddDisplayInfo(string name, bool layerLimitEnabled, ulong layerLimitMax, ulong width, ulong height)
@@ -53,6 +56,25 @@ namespace Ryujinx.HLE.HOS.Services.Vi.RootService
 
                 _displayInfo.Add(displayInfo);
             }
+            void AddDisplayInfoLs(string name, bool layerLimitEnabled, ulong layerLimitMax, ulong width, ulong height)
+            {
+                DisplayInfo displayInfo = new DisplayInfo()
+                {
+                    Name = new Array64<byte>(),
+                    LayerLimitEnabled = layerLimitEnabled,
+                    Padding = new Array7<byte>(),
+                    LayerLimitMax = layerLimitMax,
+                    Width = width,
+                    Height = height
+                };
+
+                Encoding.ASCII.GetBytes(name).AsSpan().CopyTo(displayInfo.Name.AsSpan());
+
+                _displayInfoForListCmd.Add(displayInfo);
+            }
+
+            AddDisplayInfoLs("Default",true,1,1920,1080);
+            AddDisplayInfoLs("Edid", true, 1, 1920, 1080);
 
             AddDisplayInfo("Default",  true,  1, 1920, 1080);
             AddDisplayInfo("External", true,  1, 1920, 1080);
@@ -125,12 +147,12 @@ namespace Ryujinx.HLE.HOS.Services.Vi.RootService
         {
             ulong displayInfoBuffer = context.Request.ReceiveBuff[0].Position;
 
-            // TODO: Determine when more than one display is needed.
-            ulong displayCount = 1;
+            // I found where more than one display is needed!
+            ulong displayCount = 2;
 
             for (int i = 0; i < (int)displayCount; i++)
             {
-                context.Memory.Write(displayInfoBuffer + (ulong)(i * Unsafe.SizeOf<DisplayInfo>()), _displayInfo[i]);
+                context.Memory.Write(displayInfoBuffer + (ulong)(i * Unsafe.SizeOf<DisplayInfo>()), _displayInfoForListCmd[i]);
             }
 
             context.ResponseData.Write(displayCount);

@@ -15,7 +15,7 @@ namespace Ryujinx.HLE.HOS.Services.Olsc
 
         private int _genericEventHandle;
 
-        [CommandHipc(9)]
+        [CommandHipc(0)]
         public ResultCode GetNativeHandle(ServiceCtx context) 
         {
             if (_genericEventHandle == 0)

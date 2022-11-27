@@ -36,6 +36,13 @@ namespace Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService.Sys
             return ResultCode.Success;
         }
 
+        [CommandHipc(10)]
+        public ResultCode Start(ServiceCtx ctx)
+        {
+            //TODO: This should ****DEFINITELY**** be doing something
+            return ResultCode.Success;
+        }
+
         [CommandHipc(101)]
         public ResultCode RequestForApplicationToGetForeground(ServiceCtx ctx)
         {

@@ -1237,9 +1237,24 @@ namespace Ryujinx.Ava.Ui.ViewModels
             _owner.AppHost.Device.System.SimulateWakeUpMessage();
         }
 
+        public void SimulateHomeMenuLockedButton()
+        {
+            _owner.AppHost.Device.System.SignalLockedButtonHomeChange();
+        }
+
         public void SimulateSleepLockMessage()
         {
             _owner.AppHost.Device.System.SignalAquireSleeplockEvent();
+        }
+
+        public void SimulatePsmStateChange()
+        {
+            _owner.AppHost.Device.System.SignalPSMStateChanged();
+        }
+
+        public void SimulateAppletStateChange()
+        {
+            _owner.AppHost.Device.System.SignalAppletStateChanged();
         }
 
         public async void PurgeShaderCache()

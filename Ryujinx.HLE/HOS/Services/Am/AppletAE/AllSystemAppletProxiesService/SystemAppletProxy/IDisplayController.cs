@@ -11,6 +11,7 @@ namespace Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService.Sys
         private KTransferMemory _transferMem;
         private bool            _lastApplicationCaptureBufferAcquired;
         private bool            _callerAppletCaptureBufferAcquired;
+        private bool _lastForegroundCaptureBufferAquired;
 
         public IDisplayController(ServiceCtx context)
         {
@@ -39,6 +40,19 @@ namespace Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService.Sys
             }
 
             _lastApplicationCaptureBufferAcquired = false;
+
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(13)]
+        public ResultCode ReleaseLastForeroundCaptureBuffer(ServiceCtx context)
+        {
+            if (!_lastForegroundCaptureBufferAquired)
+            {
+                return ResultCode.BufferNotAcquired;
+            }
+
+            _lastForegroundCaptureBufferAquired = false;
 
             return ResultCode.Success;
         }
@@ -76,6 +90,28 @@ namespace Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService.Sys
             _lastApplicationCaptureBufferAcquired = true;
 
             context.ResponseData.Write(_lastApplicationCaptureBufferAcquired);
+
+            return ResultCode.Success;
+        }
+
+        [CommandHipc(17)]
+        public ResultCode AquireLastForegroundCaptureBufferEx(ServiceCtx context)
+        {
+            if (_lastForegroundCaptureBufferAquired)
+            {
+                return ResultCode.BufferAlreadyAcquired;
+            }
+
+            if (context.Process.HandleTable.GenerateHandle(_transferMem, out int handle) != KernelResult.Success)
+            {
+                throw new InvalidOperationException("Out of handles!");
+            }
+
+            context.Response.HandleDesc = IpcHandleDesc.MakeCopy(handle);
+
+            _lastForegroundCaptureBufferAquired = true;
+
+            context.ResponseData.Write(_lastForegroundCaptureBufferAquired);
 
             return ResultCode.Success;
         }

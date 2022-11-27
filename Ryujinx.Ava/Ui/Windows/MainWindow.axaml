@@ -230,6 +230,9 @@
                                 ToolTip.Tip="{locale:Locale StopEmulationTooltip}" />
                             <MenuItem Command="{ReflectionBinding SimulateWakeUpMessage}" Header="{locale:Locale MenuBarOptionsSimulateWakeUpMessage}" />
                             <MenuItem Command="{ReflectionBinding SimulateSleepLockMessage}" Header="Simulate AquiredSleepLock event" />
+                            <MenuItem Command="{ReflectionBinding SimulatePsmStateChange}" Header="Simulate PSMUpdate event" />
+                            <MenuItem Command="{ReflectionBinding SimulateAppletStateChange}" Header="Simulate AppletUpdate event" />
+                            <MenuItem Command="{ReflectionBinding SimulateHomeMenuLockedButton}" Header="Simulate HomeButtonLocked event" />
                             <Separator />
                             <MenuItem
                                 Name="ScanAmiiboMenuItem"

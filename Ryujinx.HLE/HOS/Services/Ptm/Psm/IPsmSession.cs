@@ -12,7 +12,7 @@ namespace Ryujinx.HLE.HOS.Services.Ptm.Psm
 
         public IPsmSession(Horizon system)
         {
-            _stateChangeEvent       = new KEvent(system.KernelContext);
+         //   _stateChangeEvent       = new KEvent(system.KernelContext);
             _stateChangeEventHandle = -1;
         }
 
@@ -22,7 +22,7 @@ namespace Ryujinx.HLE.HOS.Services.Ptm.Psm
         {
             if (_stateChangeEventHandle == -1)
             {
-                KernelResult resultCode = context.Process.HandleTable.GenerateHandle(_stateChangeEvent.ReadableEvent, out _stateChangeEventHandle);
+                KernelResult resultCode = context.Process.HandleTable.GenerateHandle(context.Device.System.PSMStateChangedEvent.ReadableEvent, out _stateChangeEventHandle);
 
                 if (resultCode != KernelResult.Success)
                 {

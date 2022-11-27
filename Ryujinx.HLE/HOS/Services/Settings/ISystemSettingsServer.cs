@@ -260,16 +260,16 @@ namespace Ryujinx.HLE.HOS.Services.Settings
         public ResultCode GetTvSettings(ServiceCtx ctx)
         {
             ctx.ResponseData.Write((UInt32)0); //flags
-            ctx.ResponseData.Write((UInt32)1); //res
-            ctx.ResponseData.Write((UInt32)1); //ctype
+            ctx.ResponseData.Write((UInt32)2); //res
+            ctx.ResponseData.Write((UInt32)0); //ctype
             ctx.ResponseData.Write((UInt32)1); //range
             ctx.ResponseData.Write((UInt32)0); //cmu
             ctx.ResponseData.Write((UInt32)0); //underscan
 
             //I have no idea what these should be
 
-            ctx.ResponseData.Write(1); //gamma
-            ctx.ResponseData.Write(1); //contrast
+            ctx.ResponseData.Write(1f); //gamma
+            ctx.ResponseData.Write(1f); //contrast
             return ResultCode.Success;
         }
 

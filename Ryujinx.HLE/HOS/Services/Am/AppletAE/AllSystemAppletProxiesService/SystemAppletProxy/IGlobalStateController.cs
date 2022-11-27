@@ -10,6 +10,14 @@ namespace Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService.Sys
         public IGlobalStateController() { }
         private int _evHandle;
 
+        [CommandHipc(2)]
+        public ResultCode StartSleepSequence(ServiceCtx ctx)
+        {
+            //ohno
+            Logger.Info?.Print(LogClass.ServiceAm, "StartSleepSequence() called");
+            return ResultCode.Success;
+        }
+
         [CommandHipc(15)]
         public ResultCode GetHdcpAuthenticationFailedEvent(ServiceCtx ctx)
         {
