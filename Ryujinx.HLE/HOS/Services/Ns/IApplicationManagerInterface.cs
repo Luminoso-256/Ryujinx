@@ -108,6 +108,13 @@ namespace Ryujinx.HLE.HOS.Services.Ns
             return ResultCode.Success;
         }
 
+        [CommandHipc(43)]
+        public ResultCode CheckSdCardMountStatus(ServiceCtx context)
+        {
+            return ResultCode.Success;
+            
+        }
+
         [CommandHipc(47)]
         public ResultCode GetTotalSpaceSize(ServiceCtx context)
         {

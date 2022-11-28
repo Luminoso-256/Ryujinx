@@ -1,4 +1,5 @@
-﻿using Ryujinx.HLE.HOS.Ipc;
+﻿using Ryujinx.Common.Logging;
+using Ryujinx.HLE.HOS.Ipc;
 using Ryujinx.HLE.HOS.Kernel.Common;
 using Ryujinx.HLE.HOS.Kernel.Threading;
 using System;
@@ -26,10 +27,12 @@ namespace Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService.Sys
         [CommandHipc(1)]
         public ResultCode TryLock(ServiceCtx ctx)
         {
+         
             _locked = true;
             //according to https://switchbrew.org/wiki/Applet_Manager_services#ILockAccessor, input flag controls handle, output flag is success
             ctx.ResponseData.Write(true); // here in ryu-stub-land, requests *never fail*!
             bool flag = ctx.RequestData.ReadBoolean();
+            Logger.Info?.Print(LogClass.ServiceAm, $"TryLock {flag}");
             if (flag)
             {
                 if (_lockEventHandle == -1)
@@ -49,6 +52,7 @@ namespace Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService.Sys
         [CommandHipc(2)]
         public ResultCode Unlock(ServiceCtx ctx)
         {
+            Logger.Info?.Print(LogClass.ServiceAm, "Unlock");
             _locked = false;
             return ResultCode.Success;
         }
@@ -56,6 +60,7 @@ namespace Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService.Sys
         [CommandHipc(3)]
         public ResultCode GetEvent(ServiceCtx ctx)
         {
+            Logger.Info?.Print(LogClass.ServiceAm, $"GetEvent on ILockAccessor! Woo!");
             if (_lockEventHandle == -1)
             {
                 KernelResult resultCode = ctx.Process.HandleTable.GenerateHandle(ctx.Device.System.LockedButtonHomeMenuEvent.ReadableEvent, out _lockEventHandle);
@@ -66,6 +71,12 @@ namespace Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService.Sys
                 }
             }
             ctx.Response.HandleDesc = IpcHandleDesc.MakeCopy(_lockEventHandle);
+            Task.Factory.StartNew(() =>
+            {
+                System.Threading.Thread.Sleep(500);
+                Logger.Info?.Print(LogClass.ServiceAm, "Auto-firing an event w/ delay to bootstrap qlaunch.");
+                ctx.Device.System.LockedButtonHomeMenuEvent.ReadableEvent.Signal();
+            });
             return ResultCode.Success;
         }
 

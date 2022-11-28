@@ -30,7 +30,7 @@ namespace Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService.Sys
         private bool _restartMessageEnabled              = false;
         private bool _outOfFocusSuspendingEnabled        = false;
         private bool _handlesRequestToDisplay            = false;
-        private bool _autoSleepDisabled                  = false;
+        private bool _autoSleepDisabled                  = true;
         private bool _albumImageTakenNotificationEnabled = false;
         private bool _recordVolumeMuted = false;
 

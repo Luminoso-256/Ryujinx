@@ -407,7 +407,6 @@ namespace Ryujinx.Ui.App.Common
                                     if (nca.Header.ContentType != NcaContentType.Program || (nca.SectionExists(NcaSectionType.Data) && nca.Header.GetFsHeader(dataIndex).IsPatchSection()))
                                     {
                                         numApplicationsFound--;
-
                                         continue;
                                     }
                                 }

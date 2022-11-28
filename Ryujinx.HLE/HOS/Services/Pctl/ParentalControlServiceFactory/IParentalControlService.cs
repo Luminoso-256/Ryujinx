@@ -123,7 +123,7 @@ namespace Ryujinx.HLE.HOS.Services.Pctl.ParentalControlServiceFactory
         [CommandHipc(1032)]
         public ResultCode GetSafetyLevel(ServiceCtx ctx)
         {
-            ctx.ResponseData.Write((UInt32)1);
+            ctx.ResponseData.Write((UInt32)0);
             return ResultCode.Success;
         }
 

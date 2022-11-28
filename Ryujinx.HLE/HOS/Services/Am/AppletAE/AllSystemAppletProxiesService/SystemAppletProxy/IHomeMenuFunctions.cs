@@ -38,7 +38,9 @@ namespace Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService.Sys
             //https://switchbrew.org/wiki/Applet_Manager_services#PushToGeneralChannel
             //"RequestHomeMenu"
             MakeObject(ctx, new AppletAE.IStorage(new byte[]{0x53,0x41, 0x4d,0x53, 0x01,0x00, 0x00,0x00, 
-                /*the magic bit*/ 0x03,0x00, 0x00,0x00, 0x01,0x00, 0x00,0x00}));
+                /*the magic bit*/ 0x02,0x00, 0x00,0x00, 0x01,0x00, 0x00,0x00}));
+            //0x03 ~ starts rendering, black screens
+            //0x02 ~ basically the same, except never starts rendering a black screen.
             return ResultCode.Success;
         }
 
@@ -65,10 +67,21 @@ namespace Ryujinx.HLE.HOS.Services.Am.AppletAE.AllSystemAppletProxiesService.Sys
             return ResultCode.Success;
         }
 
+        [CommandHipc(30)]
+        public ResultCode GetHomeButtonWriterLockAccessorEx(ServiceCtx context)
+        {
+            MakeObject(context, new ILockAccessor(context, 0));
+            return ResultCode.Success;
+        }
+
         [CommandHipc(31)]
         public ResultCode GetWriterLockAccessorEx(ServiceCtx context)
         {
-            MakeObject(context,new ILockAccessor(context,context.RequestData.ReadUInt32()));
+            uint button = context.RequestData.ReadUInt32();
+            Logger.Stub?.Print(LogClass.ServiceAm, $"GetWriterLockAccessorEx | Code: {button}");
+            // according to switchbrew 0 is home button.
+            //they neglect to mention what the others are -_-
+            MakeObject(context, new ILockAccessor(context, button));
             return ResultCode.Success;
         }
     }
