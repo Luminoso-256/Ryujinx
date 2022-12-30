@@ -7,6 +7,9 @@
 
   <ItemGroup>
     <PackageReference Include="OpenTK.Graphics" />
+    <PackageReference Include="Silk.NET.OpenXR" />
+    <PackageReference Include="Silk.NET.OpenXR.Extensions.EXT" />
+    <PackageReference Include="Silk.NET.OpenXR.Extensions.KHR" />
   </ItemGroup>
 
   <ItemGroup>

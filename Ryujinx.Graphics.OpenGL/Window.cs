@@ -15,6 +15,7 @@ namespace Ryujinx.Graphics.OpenGL
         private int _width;
         private int _height;
         private int _copyFramebufferHandle;
+        private XRGame _xr;
 
         internal BackgroundContextWorker BackgroundContext { get; private set; }
 
@@ -23,6 +24,7 @@ namespace Ryujinx.Graphics.OpenGL
         public Window(OpenGLRenderer renderer)
         {
             _renderer = renderer;
+            _xr = renderer.Xr; //useful shortcut
         }
 
         public void Present(ITexture texture, ImageCrop crop, Action swapBuffersCallback)

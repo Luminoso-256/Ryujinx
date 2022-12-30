@@ -40,10 +40,13 @@ namespace Ryujinx.Graphics.OpenGL
         public string GpuRenderer { get; private set; }
         public string GpuVersion { get; private set; }
 
+        internal XRGame Xr { get; private set; }
+
         public bool PreferThreading => true;
 
         public OpenGLRenderer()
         {
+            Xr = new XRGame();
             _pipeline = new Pipeline();
             _counters = new Counters();
             _window = new Window(this);
@@ -173,6 +176,7 @@ namespace Ryujinx.Graphics.OpenGL
 
             _pipeline.Initialize(this);
             _counters.Initialize();
+            //Xr.Initialize();
 
             // This is required to disable [0, 1] clamping for SNorm outputs on compatibility profiles.
             // This call is expected to fail if we're running with a core profile,
